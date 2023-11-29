@@ -10,4 +10,5 @@ type Post struct {
 	Likes			int
 	Draft			bool
 	Author		string
+	UserID		uint	`gorm:"user_id"`
 }

@@ -20,10 +20,18 @@ func CreatePost(ctx *gin.Context) {
 		Likes		int
 		Draft		bool
 		Author	string
+		UserID	uint
 	}
 
 	// Bind body var to JSON
 	ctx.BindJSON(&body)
+
+	// Get user who is creating the post and check for errors
+	user, exists := ctx.Get("user")
+	if !exists {
+		ctx.JSON(500, gin.H{"error": "user not found"})
+	}
+	body.UserID = user.(models.User).ID
 
 	// Add info to post variable
 	post := models.Post{
@@ -32,6 +40,7 @@ func CreatePost(ctx *gin.Context) {
 		Likes: body.Likes,
 		Draft: body.Draft,
 		Author: body.Author,
+		UserID: body.UserID,
 	}
 
 	fmt.Println(post)
